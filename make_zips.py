@@ -15,7 +15,7 @@ textures_dir = os.path.join(resource_dir,"textures")
 for subdir, dirs, files in os.walk(maps_dir):
 	for filename in files:
 		subdir = subdir.split("\\")[-1]
-		#we dont need to do dm
+		#i dont have to do the dm/ folder 
 		if subdir != "dm":
 			#only bsp
 			if filename[-3:] == "bsp":
@@ -52,7 +52,7 @@ for subdir, dirs, files in os.walk(maps_dir):
 					except Exception as e:
 						print(e)
 			    		
-
+				missing_stuff = os.path.join(zip_dir,subdir,"missing_stuff.txt")
 				with zipfile.ZipFile(zfile,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as zipObj:
 					#write the bsp first
 					mapfile = os.path.join(maps_dir,subdir,filename)
@@ -61,10 +61,12 @@ for subdir, dirs, files in os.walk(maps_dir):
 					for x in req_files:
 						pathToFile = os.path.join(resource_dir,x)
 						if os.path.isfile(pathToFile):
-							print(f"{pathToFile} : exists")
 							zipObj.write(pathToFile, x)
 						else:
-							print(f"{filename} ~ {x} : not exist")
-
-
-
+							print(f"{pathToFile} : not exist")
+							if os.path.isfile(missing_stuff):
+								with open(missing_stuff,"a") as f:
+									f.write(f"{filename} ~ {x} : not exist\n")
+							else:
+								with open(missing_stuff,"w") as f:
+									f.write(f"{filename} ~ {x} : not exist\n")
