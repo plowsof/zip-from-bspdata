@@ -56,7 +56,7 @@ for subdir, dirs, files in os.walk(maps_dir):
 				with zipfile.ZipFile(zfile,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as zipObj:
 					#write the bsp first
 					mapfile = os.path.join(maps_dir,subdir,filename)
-					zip_mapdir = os.path.join("maps",filename)
+					zip_mapdir = os.path.join("maps",subdir,filename)
 					zipObj.write(mapfile, zip_mapdir)
 					for x in req_files:
 						pathToFile = os.path.join(resource_dir,x)
